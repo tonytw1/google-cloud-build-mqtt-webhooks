@@ -2,6 +2,6 @@ steps:
   - name: 'gcr.io/$PROJECT_ID/scala-sbt'
     args: ['clean', 'test', 'docker:publishLocal']
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['tag', 'google-cloud-builder:1.0', 'eu.gcr.io/$PROJECT_ID/google-cloud-builder:$COMMIT_SHA']
+    args: ['tag', 'google-cloud-builder-mqtt-webhooks:1.0', 'eu.gcr.io/$PROJECT_ID/google-cloud-builder-mqtt-webhooks:$COMMIT_SHA']
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'eu.gcr.io/$PROJECT_ID/google-cloud-builder:$COMMIT_SHA']
+    args: ['push', 'eu.gcr.io/$PROJECT_ID/google-cloud-builder-mqtt-webhooks:$COMMIT_SHA']
