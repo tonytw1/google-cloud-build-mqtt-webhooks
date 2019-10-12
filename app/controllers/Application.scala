@@ -8,6 +8,10 @@ import scala.concurrent.Future
 
 object Application extends Controller {
 
+  def home = Action.async { request =>
+    Future.successful(Ok(Json.toJson("Ok")))
+  }
+
   def webhook = Action.async(BodyParsers.parse.json) { request =>
     val message: JsValue = request.body
     Logger.info("Received webhook: " + message)
