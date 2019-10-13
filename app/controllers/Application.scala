@@ -31,10 +31,11 @@ object Application extends Controller {
     val data = push.message.data
     Logger.info("Message data: " + data)
 
-    val dataJson = Base64.getDecoder.decode(data).toString  // TODO utf8
-    Logger.info("Decoded data: " + dataJson)
+    val decodedData = Base64.getDecoder.decode(data)
+    val decodedDataJson = Json.parse(decodedData)
+    Logger.info("Decoded data: " + decodedDataJson.toString())
 
-    mqttService.publish(dataJson)
+    mqttService.publish(decodedDataJson.toString())
 
     Future.successful(Ok(Json.toJson("Thanks!")))
   }
