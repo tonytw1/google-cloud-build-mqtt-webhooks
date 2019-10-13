@@ -21,6 +21,7 @@ object MQTTService {
     val connection = getClient().blockingConnection
     connection.connect
     connection.publish(topic, message.getBytes, QoS.AT_MOST_ONCE, false)
+    Logger.info("Published")
     connection.disconnect
   }
 
