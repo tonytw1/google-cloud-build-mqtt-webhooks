@@ -23,9 +23,9 @@ object Application extends Controller {
     val authorizationHeader = request.headers.get("Authorization")
     Logger.info("Received webhook: " + message + " with Authorization header: " + authorizationHeader)
 
-    implicit val pr = Json.reads[Push]
-    implicit val mr = Json.reads[Message]
     implicit val ar = Json.reads[Attributes]
+    implicit val mr = Json.reads[Message]
+    implicit val pr = Json.reads[Push]
 
     val push = message.as[Push]
     val data = push.message.data
