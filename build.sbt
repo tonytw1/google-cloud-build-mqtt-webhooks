@@ -6,7 +6,7 @@ lazy val `google-cloud-build-mqtt-webhooks` = (project in file(".")).enablePlugi
 
 scalaVersion := "2.11.12"
 
-resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
+resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 
 libraryDependencies += specs2 % Test
 
