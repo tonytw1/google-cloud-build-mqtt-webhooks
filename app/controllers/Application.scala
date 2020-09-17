@@ -28,15 +28,17 @@ object Application extends Controller {
     implicit val pr = Json.reads[Push]
 
     val push = message.as[Push]
+
     val data = push.message.data
-    Logger.info("Message data: " + data)
-
     val decodedData = Base64.getDecoder.decode(data)
-    val decodedDataJson: JsValue = Json.parse(decodedData)
+    val decodedDataJson = Json.parse(decodedData)
+    val jsonMessageString = Json.prettyPrint(decodedDataJson)
+    Logger.info("Decoded message data: " + jsonMessageString)
 
-    Logger.info("Decoded data: " + Json.prettyPrint(decodedDataJson))
-    mqttService.publish(Json.prettyPrint(decodedDataJson))
+    val status = push.message.attributes.status
+    Logger.info("Message status: " + status)
 
+    mqttService.publish(jsonMessageString, status)
     Future.successful(Ok(Json.toJson("Thanks!")))
   }
 

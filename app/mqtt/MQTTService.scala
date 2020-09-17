@@ -16,11 +16,14 @@ object MQTTService {
   private val topic = Play.configuration.getString("mqtt.topic").get
   private val caCert = Play.configuration.getString("mqtt.tls.cacert")
 
-  def publish(message: String) = {
+  private val statusesTopic = Seq(topic, "statuses").mkString("/")
+
+  def publish(message: String, status: String) = {
     Logger.info("Publishing to mqtt topic " + host + ":" + port + " / " + topic + ": " + message)
     val connection = getClient().blockingConnection
     connection.connect
     connection.publish(topic, message.getBytes, QoS.AT_MOST_ONCE, false)
+    connection.publish(statusesTopic, status.getBytes, QoS.AT_MOST_ONCE, false)
     Logger.info("Published")
     connection.disconnect
   }

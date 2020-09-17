@@ -12,3 +12,4 @@ See https://cloud.google.com/cloud-build/docs/send-build-notifications
 
 The decoded JSON contents of the push message data field.
 
+The message status string only onto the /statues subtopic.
