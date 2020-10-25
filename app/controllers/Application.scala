@@ -18,6 +18,8 @@ object Application extends Controller {
     Future.successful(Ok(Json.toJson("Ok")))
   }
 
+  var publishedTimeWaterMark = ""
+
   def webhook: Action[JsValue] = Action.async(BodyParsers.parse.json) { request =>
     val message = request.body
     val authorizationHeader = request.headers.get("Authorization")
@@ -33,12 +35,22 @@ object Application extends Controller {
     val decodedData = Base64.getDecoder.decode(data)
     val decodedDataJson = Json.parse(decodedData)
     val jsonMessageString = Json.prettyPrint(decodedDataJson)
-    Logger.info("Decoded message data: " + jsonMessageString)
 
-    val status = push.message.attributes.status
-    Logger.info("Message status: " + status)
+    val messagePublishTime = push.message.publishTime
+    Logger.info("Received webhooked messasge with publishTime: " + messagePublishTime)
+    if (messagePublishTime > publishedTimeWaterMark) {
+      publishedTimeWaterMark = messagePublishTime
+      Logger.info("Decoded message data: " + jsonMessageString)
 
-    mqttService.publish(jsonMessageString, status)
+      val status = push.message.attributes.status
+      Logger.info("Message status: " + status)
+      mqttService.publish(jsonMessageString, status)
+
+    } else {
+      // TODO This consumer concern should be pushed down to the clients who care about it; we just need to capture the webhooks without opinion.
+      Logger.warn("Ignoring out of order message: " + messagePublishTime + " / " + publishedTimeWaterMark)
+    }
+
     Future.successful(Ok(Json.toJson("Thanks!")))
   }
 
