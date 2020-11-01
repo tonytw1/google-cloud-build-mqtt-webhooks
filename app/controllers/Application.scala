@@ -37,7 +37,7 @@ object Application extends Controller {
     val jsonMessageString = Json.prettyPrint(decodedDataJson)
 
     val messagePublishTime = push.message.publishTime
-    Logger.info("Received webhooked messasge with publishTime: " + messagePublishTime)
+    Logger.info("Received webhooked message with publishTime: " + messagePublishTime)
     if (messagePublishTime > publishedTimeWaterMark) {
       publishedTimeWaterMark = messagePublishTime
       Logger.info("Decoded message data: " + jsonMessageString)
