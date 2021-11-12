@@ -1,20 +1,20 @@
 package mqtt
 
+import org.fusesource.mqtt.client.{MQTT, QoS}
+import play.api.{Configuration, Logger}
+
 import java.io.{File, FileInputStream}
 import java.security.KeyStore
 import java.security.cert.{CertificateFactory, X509Certificate}
+import javax.inject.Inject
 import javax.net.ssl.{SSLContext, TrustManagerFactory}
 
-import org.fusesource.mqtt.client.{MQTT, QoS}
-import play.api.Play.current
-import play.api.{Logger, Play}
+class MQTTService @Inject()(configuration: Configuration) {
 
-object MQTTService {
-
-  private val host = Play.configuration.getString("mqtt.host").get
-  private val port = Play.configuration.getInt("mqtt.port").get
-  private val topic = Play.configuration.getString("mqtt.topic").get
-  private val caCert = Play.configuration.getString("mqtt.tls.cacert")
+  private val host = configuration.getString("mqtt.host").get
+  private val port = configuration.getInt("mqtt.port").get
+  private val topic = configuration.getString("mqtt.topic").get
+  private val caCert = configuration.getString("mqtt.tls.cacert")
 
   private val statusesTopic = Seq(topic, "statuses").mkString("/")
 

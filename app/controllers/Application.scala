@@ -1,18 +1,16 @@
 package controllers
 
-import java.util.Base64
-
 import model.{Attributes, Message, Push}
 import mqtt.MQTTService
 import play.api.Logger
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, BodyParsers, Controller}
 
+import java.util.Base64
+import javax.inject.Inject
 import scala.concurrent.Future
 
-object Application extends Controller {
-
-  val mqttService = MQTTService
+class Application @Inject()(mqttService: MQTTService) extends Controller {
 
   def home: Action[AnyContent] = Action.async {
     Future.successful(Ok(Json.toJson("Ok")))

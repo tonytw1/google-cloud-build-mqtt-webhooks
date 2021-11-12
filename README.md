@@ -16,3 +16,9 @@ to send the build notifications to our endpoint.
 The decoded JSON contents of the push message data field.
 
 The message status string only onto the /statues subtopic.
+
+
+
+### Build
+
+Scala sbt build.
