@@ -6,7 +6,7 @@ lazy val `google-cloud-build-mqtt-webhooks` = (project in file(".")).enablePlugi
 
 scalaVersion := "2.12.14"
 
-libraryDependencies += "org.fusesource.mqtt-client" % "mqtt-client" % "1.14"
+libraryDependencies += "org.fusesource.mqtt-client" % "mqtt-client" % "1.16"
 libraryDependencies += guice
 
 libraryDependencies += specs2 % Test
