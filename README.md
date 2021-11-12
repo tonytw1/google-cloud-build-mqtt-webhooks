@@ -7,6 +7,9 @@ The cool kids would probably use a Lambda but we're happy with containers for no
 
 See https://cloud.google.com/cloud-build/docs/send-build-notifications
 
+Specifically we have created a [push subscription](https://cloud.google.com/pubsub/docs/push#configuring-http-endpoints)
+to send the build notifications to our endpoint.
+
 
 ## Output
 
