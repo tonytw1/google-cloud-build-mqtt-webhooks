@@ -1,7 +1,7 @@
 package mqtt
 
 import org.fusesource.mqtt.client.{MQTT, QoS}
-import play.api.{Configuration, Logger}
+import play.api.{Configuration, Logging}
 
 import java.io.{File, FileInputStream}
 import java.security.KeyStore
@@ -9,26 +9,26 @@ import java.security.cert.{CertificateFactory, X509Certificate}
 import javax.inject.Inject
 import javax.net.ssl.{SSLContext, TrustManagerFactory}
 
-class MQTTService @Inject()(configuration: Configuration) {
+class MQTTService @Inject()(configuration: Configuration) extends Logging {
 
-  private val host = configuration.getString("mqtt.host").get
-  private val port = configuration.getInt("mqtt.port").get
-  private val topic = configuration.getString("mqtt.topic").get
-  private val caCert = configuration.getString("mqtt.tls.cacert")
+  private val host = configuration.get[String]("mqtt.host")
+  private val port = configuration.get[Int]("mqtt.port")
+  private val topic = configuration.get[String]("mqtt.topic")
+  private val caCert = configuration.getOptional[String]("mqtt.tls.cacert")
 
   private val statusesTopic = Seq(topic, "statuses").mkString("/")
 
-  def publish(message: String, status: String) = {
-    Logger.info("Publishing to mqtt topic " + host + ":" + port + " / " + topic + ": " + message)
-    val connection = getClient().blockingConnection
-    connection.connect
+  def publish(message: String, status: String): Unit = {
+    logger.info("Publishing to mqtt topic " + host + ":" + port + " / " + topic + ": " + message)
+    val connection = getClient.blockingConnection
+    connection.connect()
     connection.publish(topic, message.getBytes, QoS.AT_MOST_ONCE, false)
     connection.publish(statusesTopic, status.getBytes, QoS.AT_MOST_ONCE, false)
-    Logger.info("Published")
-    connection.disconnect
+    logger.info("Published")
+    connection.disconnect()
   }
 
-  private def getClient(): MQTT = {
+  private def getClient: MQTT = {
 
     def sslContext(certPath: String): SSLContext = {
       val cf = CertificateFactory.getInstance("X.509")
