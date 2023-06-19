@@ -32,7 +32,7 @@ class Application @Inject()(cc: ControllerComponents, mqttService: MQTTService) 
     val jsonMessageString = Json.prettyPrint(decodedDataJson)
 
     val messagePublishTime = push.message.publishTime
-    logger.info("Received webhooked message with publishTime: " + messagePublishTime)
+    logger.info("Received webhook message with publishTime: " + messagePublishTime)
 
     publishedTimeWaterMark = messagePublishTime
     logger.info("Decoded message data: " + jsonMessageString)
@@ -40,7 +40,7 @@ class Application @Inject()(cc: ControllerComponents, mqttService: MQTTService) 
     val status = push.message.attributes.status
     logger.info("Message status: " + status)
 
-    mqttService.publish(jsonMessageString, Json.stringify(Json.toJson(Summary(status, messagePublishTime))))
+    mqttService.publish(jsonMessageString, Json.stringify(Json.toJson(Summary(status, Json.stringify(message)))))
 
     Ok(Json.toJson("Thanks!"))
   }
