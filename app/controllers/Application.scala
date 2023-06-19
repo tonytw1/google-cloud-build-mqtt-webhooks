@@ -40,7 +40,7 @@ class Application @Inject()(cc: ControllerComponents, mqttService: MQTTService) 
     val status = push.message.attributes.status
     logger.info("Message status: " + status)
 
-    mqttService.publish(jsonMessageString)
+    mqttService.publish(Json.stringify(message))
 
     Ok(Json.toJson("Thanks!"))
   }

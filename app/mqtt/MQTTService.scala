@@ -18,12 +18,11 @@ class MQTTService @Inject()(configuration: Configuration) extends Logging {
 
   private val statusesTopic = Seq(topic, "statuses").mkString("/")
 
-  def publish(message: String, status: String): Unit = {
+  def publish(message: String): Unit = {
     logger.info("Publishing to mqtt topic " + host + ":" + port + " / " + topic + ": " + message)
     val connection = getClient.blockingConnection
     connection.connect()
     connection.publish(topic, message.getBytes, QoS.AT_MOST_ONCE, false)
-    connection.publish(statusesTopic, status.getBytes, QoS.AT_MOST_ONCE, false)
     logger.info("Published")
     connection.disconnect()
   }
