@@ -1,6 +1,6 @@
 package model
 
-import play.api.libs.json.{Json, Reads}
+import play.api.libs.json.{Json, Reads, Writes}
 
 case class Push(message: Message, subscription: String)
 
@@ -18,4 +18,10 @@ case class Attributes(buildId: String, status: String)
 
 object Attributes {
   implicit val ar: Reads[Attributes] = Json.reads[Attributes]
+}
+
+case class Summary(status: String, publishedTime: String)
+
+object Summary {
+  implicit val sw: Writes[Summary] = Json.writes[Summary]
 }
